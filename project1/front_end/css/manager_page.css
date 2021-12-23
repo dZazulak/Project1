@@ -1,0 +1,20 @@
+body{
+    background-color: aqua;
+}
+#managerTable, #pendingReimbursementTable, #pastReimbursementTable, #statisticsTable{
+    text-align: center;
+    margin: auto;
+    padding: 20px
+}
+
+#input_and_button{
+    text-align: center;
+}
+
+tr, th, td{
+    padding: 10px;
+}
+
+#logout_div{
+    text-align:right;
+}

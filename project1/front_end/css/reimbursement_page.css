@@ -1,0 +1,36 @@
+body{
+    background-color: aqua;
+}
+
+input{
+    margin: 10px 10px 10px 10px;
+}
+
+#new_reimbursement_message{
+    height: 100px;
+    width: 172px;
+}
+
+#new_reimbursement_employee_id{
+    margin-left: 45px;
+}
+
+#new_reimbursement_manager_id{
+    margin-left: 50px;
+}
+
+#new_reimbursement_amount{
+    margin-left: 73px;
+}
+
+#new_reimbursement_approval{
+    margin-left: 66px;
+}
+
+#new_reimbursement_message{
+    margin-left: 10px;
+}
+
+#new_reimbursement_submit_button{
+    margin-bottom: 10px;
+}

@@ -33,42 +33,17 @@ class ReimbursementDAOImp(ReimbursementDAO):
             employee_reimbursement_list.append(Reimbursement(*employee_reimbursement))
         return employee_reimbursement_list
 
-    def get_reimbursement_by_approval(self, employee_id: int, approval: str):
-        sql = "select * from project1.reimbursement where employee_id = %s and approval = %s"
-        cursor = connection.cursor()
-        cursor.execute(sql, (employee_id, approval))
-        approval_reimbursement_record = cursor.fetchone()
-        approval_reimbursement = Reimbursement(*approval_reimbursement_record)
-        return approval_reimbursement
-
-    def get_all_reimbursements_by_approval(self, approval: str) -> list[Reimbursement]:
-        sql = "select * from project1.reimbursement where approval = %s"
-        cursor = connection.cursor()
-        cursor.execute(sql, [approval])
-        approval_reimbursement_records = cursor.fetchall()
-        approval_reimbursement_list = []
-        for approval_reimbursement in approval_reimbursement_records:
-            approval_reimbursement_list.append(Reimbursement(*approval_reimbursement))
-        return approval_reimbursement_list
-
     def approve_reimbursement(self, reimbursement: Reimbursement) -> Reimbursement:
-        sql = "update project1.reimbursement set approval = %s where reimbursement_id = %s"
+        sql = "update project1.reimbursement set approval = %s, manager_comment = %s where reimbursement_id = %s"
         cursor = connection.cursor()
-        cursor.execute(sql, (reimbursement.approval, reimbursement.reimbursement_id))
+        cursor.execute(sql, (reimbursement.approval, reimbursement.manager_comment, reimbursement.reimbursement_id))
         connection.commit()
         return reimbursement
 
     def deny_reimbursement(self, reimbursement: Reimbursement):
-        sql = "update project1.reimbursement set approval = %s where reimbursement_id = %s"
+        sql = "update project1.reimbursement set approval = %s, manager_comment = %s where reimbursement_id = %s"
         cursor = connection.cursor()
-        cursor.execute(sql, (reimbursement.approval, reimbursement.reimbursement_id))
-        connection.commit()
-        return reimbursement
-
-    def leave_comment_on_reimbursement(self, reimbursement: Reimbursement) -> Reimbursement:
-        sql = "update project1.reimbursement set manager_comment = %s where reimbursement_id = %s"
-        cursor = connection.cursor()
-        cursor.execute(sql, (reimbursement.manager_comment, reimbursement.reimbursement_id))
+        cursor.execute(sql, (reimbursement.approval, reimbursement.manager_comment, reimbursement.reimbursement_id))
         connection.commit()
         return reimbursement
 
@@ -82,18 +57,15 @@ class ReimbursementDAOImp(ReimbursementDAO):
             pending_reimbursement_list.append(Reimbursement(*pending_reimbursement))
         return pending_reimbursement_list
 
-    def get_past_reimbursements_by_manager_id(self, manager_id: int, approval: str) -> list[Reimbursement]:
+    def get_past_reimbursements_by_manager_id(self, manager_id: int) -> list[Reimbursement]:
         sql = "select * from project1.reimbursement where manager_id = %s and approval <> 'Pending'"
         cursor = connection.cursor()
-        cursor.execute(sql, (manager_id, approval))
+        cursor.execute(sql, [manager_id])
         past_reimbursements_records = cursor.fetchall()
         past_reimbursement_list = []
         for past_reimbursement in past_reimbursements_records:
             past_reimbursement_list.append(Reimbursement(*past_reimbursement))
         return past_reimbursement_list
-
-    def view_reimbursement_statistics(self, reimbursement: Reimbursement):
-        pass
 
     def create_new_reimbursement_by_employee_id(self, reimbursement: Reimbursement):
         sql = "insert into project1.reimbursement values(default, %s, %s, %s, %s, %s, %s) returning reimbursement_id"
@@ -105,3 +77,14 @@ class ReimbursementDAOImp(ReimbursementDAO):
         generated_id = cursor.fetchone()[0]
         reimbursement.reimbursement_id = generated_id
         return reimbursement
+
+    def get_all_employee_reimbursement_statistics(self, employee_id: int):
+        sql = "select sum(amount), avg(amount), count(amount), max(amount), min(amount) from project1.reimbursement " \
+              "where employee_id = %s"
+        cursor = connection.cursor()
+        cursor.execute(sql, [employee_id])
+        generated_sum = cursor.fetchone()
+        return generated_sum
+
+
+

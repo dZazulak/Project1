@@ -1,5 +1,5 @@
 async function getManagerEmailAndPassword(){
-    let url = "http://127.0.0.1:5000/manager/managerLogin"
+    let url = "http://127.0.0.1:5000/manager/managerLogin";
     const email = document.getElementById("email");
     const passcode = document.getElementById("passcode");
 

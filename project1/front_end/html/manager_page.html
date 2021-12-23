@@ -3,8 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <title>Manager</title>
+    <link rel="stylesheet" type="text/css" href="../css/manager_page.css">
 </head>
 <body>
-    <p>Manager</p>
+    <h1 style = "text-align: center; color:blueviolet;">Manager Information</h1>
+    <div id="logout_div"><button onclick="logout()" id="manager_logout_button">Logout</button></div>
+
+    <table id="managerTable">
+        <thead id = "managerHead">
+            <tr>
+                <th>
+                    Manager ID
+                </th>
+                <th>
+                    First Name
+                </th>
+                <th>
+                    Last Name
+                </th>
+                <th>
+                    Manager email
+                </th>
+            </tr>
+        </thead>
+        <tbody id="managerBody">
+
+        </tbody>
+    </table>
+    <h2 style="text-align: center; color: blueviolet;">Pending Reimbursements</h2>
+    <table id = "pendingReimbursementTable">
+        <thead id="pendingReimbursementHead">
+            <tr>
+                <th>
+                    Reimbursement ID
+                </th>
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Approval
+                </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Mananger Comment
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody id="pendingReimbursementBody">
+
+        </tbody>
+    </table>
+    <h2 style="text-align: center; color: blueviolet;">Past Reimbursements</h2>
+    <table id = "pastReimbursementTable">
+        <thead id="pastReimbursementHead">
+            <tr>
+                <th>
+                    Reimbursement ID
+                </th>
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>
+                    Approval
+                </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Mananger Comment
+                </th>
+            </tr>
+        </thead>
+        <tbody id="pastReimbursementBody">
+
+        </tbody>
+    </table>
+    <br>
+
+    <h2 style="text-align: center; color: blueviolet;">Statistics</h2>
+    <div id="input_and_button">
+    <input type="number" placeholder="Employee ID" id="statistic_employee_id">
+    <button onclick="getAllEmployeeReimbursementData()" id="statistics_button">Show Statistic</button>
+    </div>
+    <table id="statisticsTable">
+        <thead id="statisticsHead">
+            <tr>
+                <th>
+                    Employee ID
+                </th>
+                <th>
+                    Sum
+                </th>
+                <th>
+                    Average
+                </th>
+                <th>
+                    Reimbursement Count
+                </th>
+                <th>
+                    Max
+                </th>
+                <th>
+                    Min
+                </th>
+            </tr>
+        </thead>
+        <tbody id="statisticsBody">
+
+        </tbody>
+    </table>
+
+
+    <script src="../js/manager_page.js"></script>
 </body>
 </html>

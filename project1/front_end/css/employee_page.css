@@ -1,0 +1,16 @@
+#employeeTable, #reimbursementTable{
+    text-align: center;
+    margin: auto;
+}
+
+#reimbursementButtonDiv{
+    text-align:center;
+}
+  
+#logoutButtonDiv{
+    text-align: right;
+}
+
+body{
+    background-color: aqua;
+}

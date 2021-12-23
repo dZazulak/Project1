@@ -9,3 +9,15 @@
   }
   .Header { grid-area: Header; }
   .Login { grid-area: Login; }
+
+.Login{
+  text-align: center;
+}
+
+#email{
+  margin-left: 25px;
+}
+
+body{
+  background-color: aqua;
+}

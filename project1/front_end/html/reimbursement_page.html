@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Reimbursement Page</title>
+    <link rel="stylesheet" type="text/css" href="../css/reimbursement_page.css">
+</head>
+<body style="text-align: center;">
+    <h1 style="text-align: center;">New Reimbursement</h1>
+    <label for="new_reimbursement_id">Reimbursement ID</label>
+    <input type="text" id="new_reimbursement_id" placeholder="Autofilled" readonly>
+    <br>
+    <label for="new_reimbursement_employee_id">Employee ID</label>
+    <input type="number" id="new_reimbursement_employee_id" placeholder="Autofilled" readonly>
+    <br>
+    <label for="new_reimbursement_manager_id">Manager ID</label>
+    <input type="number" id="new_reimbursement_manager_id">
+    <br>
+    <label for="new_reimbursement_amount">Amount</label>
+    <input type="number" id="new_reimbursement_amount">
+    <br>
+    <label for="new_reimbursement_approval">Approval</label>
+    <input type="text" id="new_reimbursement_approval" placeholder="Pending" readonly>
+    <br>
+    <label for="new_reimbursement_message">Message/Reason</label>
+    <textarea id="new_reimbursement_message"></textarea>
+    <br>
+    <label for="new_reimbursement_manager_comment">Manager Comment</label>
+    <input type="text" id="new_reimbursement_manager_comment" placeholder="Your manager will leave a comment here when it is approved or denied" readonly>
+    <br>
+    <button id="new_reimbursement_submit_button" onclick="createNewReimbursement()">Submit Reimbursement</button>
+    <br>
+    <button id="return_to_employee_page" onclick="returnToHomePage()">Home Page</button>
+    <script src="../js/reimbursement_page.js"></script>
+
+</body>
+</html>

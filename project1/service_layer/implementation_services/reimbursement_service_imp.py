@@ -32,30 +32,16 @@ class ReimbursementServiceImp(ReimbursementService):
                 return self.reimbursement_dao.get_all_reimbursements_by_employee_id(employee_id)
         raise EmployeeIdNotFoundException("Employee ID was not found")
 
-    def service_get_reimbursement_by_approval(self, employee_id: int, approval: str):
-        reimbursement_list = self.reimbursement_dao.get_all_reimbursements_by_id()
-        for existing_reimbursement in reimbursement_list:
-            if existing_reimbursement.employee_id == employee_id:
-                if existing_reimbursement.approval == approval:
-                    return self.reimbursement_dao.get_reimbursement_by_approval(employee_id, approval)
-                raise InvalidApprovalStatementException("Invalid approval")
-        raise EmployeeIdNotFoundException("Employee ID was not found")
-
-    def service_get_all_reimbursements_by_approval(self, approval: str) -> list[Reimbursement]:
-        reimbursement_list = self.reimbursement_dao.get_all_reimbursements_by_id()
-        for existing_reimbursement in reimbursement_list:
-            if existing_reimbursement.approval == approval:
-                return self.reimbursement_dao.get_all_reimbursements_by_approval(approval)
-            raise InvalidApprovalStatementException("Invalid approval")
-
     def service_approve_reimbursement(self, reimbursement: Reimbursement):
         reimbursement_list = self.reimbursement_dao.get_all_reimbursements_by_id()
         for existing_reimbursements in reimbursement_list:
             if existing_reimbursements.reimbursement_id == reimbursement.reimbursement_id:
                 if existing_reimbursements.manager_id == reimbursement.manager_id:
                     if existing_reimbursements.employee_id == reimbursement.employee_id:
-                        if reimbursement.approval == "Pending":
-                            return self.reimbursement_dao.approve_reimbursement(reimbursement)
+                        if reimbursement.approval == "Approved":
+                            if len(reimbursement.manager_comment) <= 200:
+                                return self.reimbursement_dao.approve_reimbursement(reimbursement)
+                            raise TooManyCharactersInCommentException("Too many characters in the comment")
                         raise InvalidApprovalStatementException("Invalid approval")
                     raise EmployeeIdNotFoundException("Employee ID was not found")
                 raise ManagerIdNotFoundException("Manager ID was not found")
@@ -66,21 +52,11 @@ class ReimbursementServiceImp(ReimbursementService):
             if existing_reimbursements.reimbursement_id == reimbursement.reimbursement_id:
                 if existing_reimbursements.manager_id == reimbursement.manager_id:
                     if existing_reimbursements.employee_id == reimbursement.employee_id:
-                        if reimbursement.approval == "Pending":
-                            return self.reimbursement_dao.approve_reimbursement(reimbursement)
+                        if reimbursement.approval == "Denied":
+                            if len(reimbursement.manager_comment) <= 200:
+                                return self.reimbursement_dao.approve_reimbursement(reimbursement)
+                            raise TooManyCharactersInCommentException("Too many characters in the comment")
                         raise InvalidApprovalStatementException("Invalid approval")
-                    raise EmployeeIdNotFoundException("Employee ID was not found")
-                raise ManagerIdNotFoundException("Manager ID was not found")
-
-    def service_leave_comment_on_reimbursement(self, reimbursement: Reimbursement) -> Reimbursement:
-        reimbursement_list = self.reimbursement_dao.get_all_reimbursements_by_id()
-        for existing_reimbursements in reimbursement_list:
-            if existing_reimbursements.reimbursement_id == reimbursement.reimbursement_id:
-                if existing_reimbursements.manager_id == reimbursement.manager_id:
-                    if existing_reimbursements.employee_id == reimbursement.employee_id:
-                        if len(reimbursement.manager_comment) <= 200:
-                            return self.reimbursement_dao.leave_comment_on_reimbursement(reimbursement)
-                        raise TooManyCharactersInCommentException("Too many characters")
                     raise EmployeeIdNotFoundException("Employee ID was not found")
                 raise ManagerIdNotFoundException("Manager ID was not found")
 
@@ -100,9 +76,6 @@ class ReimbursementServiceImp(ReimbursementService):
                     return self.reimbursement_dao.get_past_reimbursements_by_manager_id(manager_id)
         raise ManagerIdNotFoundException("Manager ID was not found")
 
-    def service_view_reimbursement_statistics(self, reimbursement: Reimbursement):
-        pass
-
     def service_create_new_reimbursement_by_employee_id(self, reimbursement: Reimbursement):
         if reimbursement.approval == "Pending":
             if type(reimbursement.amount) == int:
@@ -112,5 +85,9 @@ class ReimbursementServiceImp(ReimbursementService):
             raise NonNumericReimbursementAmountException("Reimbursement amount must be an integer")
         raise InvalidApprovalStatementException("Invalid approval")
 
-
-
+    def service_get_all_employee_reimbursement_statistics(self, employee_id: int):
+        reimbursement_list = self.reimbursement_dao.get_all_reimbursements_by_employee_id(employee_id)
+        for existing_reimbursements in reimbursement_list:
+            if existing_reimbursements.employee_id == employee_id:
+                return self.reimbursement_dao.get_all_employee_reimbursement_statistics(employee_id)
+            raise EmployeeIdNotFoundException("Employee ID was not found")

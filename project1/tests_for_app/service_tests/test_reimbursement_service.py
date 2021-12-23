@@ -18,7 +18,15 @@ reimbursement_with_bad_manager_id = Reimbursement(4, 3, 2, 50, "Approved", "Test
 reimbursement_with_bad_employee_id = Reimbursement(4, 500000, 1, 50, "Approved", "Test Reimbursement", "")
 reimbursement_with_negative_number = Reimbursement(4, 3, 1, -500, "Pending", "New Work Laptop", "")
 reimbursement_with_non_numeric = Reimbursement(4, 3, 1, "abc", "Pending", "New Work Laptop", "")
-reimbursement_with_too_many_chars = Reimbursement(4, 3, 1, 500, "Approved", "Test", "123456789012345678901234567890"
+reimbursement_with_too_many_chars_approved = Reimbursement(4, 3, 1, 500, "Approved", "Test", "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890"
+                                                                                    "123456789012345678901234567890")
+reimbursement_with_too_many_chars_denied = Reimbursement(4, 3, 1, 500, "Denied", "Test", "123456789012345678901234567890"
                                                                                     "123456789012345678901234567890"
                                                                                     "123456789012345678901234567890"
                                                                                     "123456789012345678901234567890"
@@ -31,7 +39,7 @@ reimbursement_with_duplicate_reimbursement_id = Reimbursement(4, 3, 1, 500, "Pen
 
 def test_get_reimbursement_by_id_fail():
     try:
-        reimbursement_service.service_get_reimbursement_by_id(100000)
+        reimbursement_service.service_get_reimbursement_by_id(50000)
         assert False
     except ReimbursementNotFoundException as e:
         assert str(e) == "Reimbursement ID was not found"
@@ -45,28 +53,28 @@ def test_get_all_reimbursements_by_employee_id_fail():
         assert str(e) == "Employee ID was not found"
 
 
-def test_get_reimbursement_by_approval_employee_id_fail():
-    try:
-        reimbursement_service.service_get_reimbursement_by_approval(1000000000, "Pending")
-        assert False
-    except EmployeeIdNotFoundException as e:
-        assert str(e) == "Employee ID was not found"
+# def test_get_reimbursement_by_approval_reimbursement_id_fail():
+#     try:
+#         reimbursement_service.service_get_reimbursement_by_approval(1, "Pending")
+#         assert False
+#     except ReimbursementNotFoundException as e:
+#         assert str(e) == "Reimbursement ID was not found"
 
-
-def test_get_reimbursement_by_approval_fail():
-    try:
-        reimbursement_service.service_get_reimbursement_by_approval(1, "Testing")
-        assert False
-    except InvalidApprovalStatementException as e:
-        assert str(e) == "Invalid approval"
-
-
-def test_get_all_reimbursements_by_approval_fail():
-    try:
-        reimbursement_service.service_get_all_reimbursements_by_approval("Test")
-        assert False
-    except InvalidApprovalStatementException as e:
-        assert str(e) == "Invalid approval"
+#
+# def test_get_reimbursement_by_approval_fail():
+#     try:
+#         reimbursement_service.service_get_reimbursement_by_approval(1, "Testing")
+#         assert False
+#     except InvalidApprovalStatementException as e:
+#         assert str(e) == "Invalid approval"
+#
+#
+# def test_get_all_reimbursements_by_approval_fail():
+#     try:
+#         reimbursement_service.service_get_all_reimbursements_by_approval("Test")
+#         assert False
+#     except InvalidApprovalStatementException as e:
+#         assert str(e) == "Invalid approval"
 
 
 def test_approve_reimbursement_fail_by_approval():
@@ -93,6 +101,14 @@ def test_approve_reimbursement_fail_by_employee_id():
         assert str(e) == "Employee ID was not found"
 
 
+def test_approve_reimbursement_comment_too_many_chars():
+    try:
+        reimbursement_service.service_approve_reimbursement(reimbursement_with_too_many_chars_approved)
+        assert False
+    except TooManyCharactersInCommentException as e:
+        assert str(e) == "Too many characters in the comment"
+
+
 def test_deny_reimbursement_fail_by_approval():
     try:
         reimbursement_service.service_deny_reimbursement(reimbursement_with_bad_approval)
@@ -117,28 +133,12 @@ def test_deny_reimbursement_fail_by_employee_id():
         assert str(e) == "Employee ID was not found"
 
 
-def test_approve_reimbursement_comment_fail_by_manager_id():
+def test_deny_reimbursement_comment_too_many_chars():
     try:
-        reimbursement_service.service_leave_comment_on_reimbursement(reimbursement_with_bad_manager_id)
-        assert False
-    except ManagerIdNotFoundException as e:
-        assert str(e) == "Manager ID was not found"
-
-
-def test_approve_reimbursement_comment_fail_by_employee_id():
-    try:
-        reimbursement_service.service_leave_comment_on_reimbursement(reimbursement_with_bad_employee_id)
-        assert False
-    except EmployeeIdNotFoundException as e:
-        assert str(e) == "Employee ID was not found"
-
-
-def test_approve_reimbursement_comment_fail_by_too_many_characters():
-    try:
-        reimbursement_service.service_leave_comment_on_reimbursement(reimbursement_with_too_many_chars)
+        reimbursement_service.service_deny_reimbursement(reimbursement_with_too_many_chars_denied)
         assert False
     except TooManyCharactersInCommentException as e:
-        assert str(e) == "Too many characters"
+        assert str(e) == "Too many characters in the comment"
 
 
 def test_get_all_pending_approvals_fail_by_manager_id():
